@@ -1,11 +1,15 @@
 import React from 'react'
+import './Card.css'
 
-export function Card({ name }) {
+export const Card = (props) => {
     return (
-        <div>
-            <h1>Hi {name}</h1>
+        <div className='card-container'>
+            <img alt="monster" src={`https://robohash.org/${props.monster.id}?set=set2&size=180x180`}></img>
+            <h2>{props.monster.name}</h2>
+            <p>{props.monster.email}</p>
         </div>
     )
+
 }
 
 
