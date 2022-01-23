@@ -1,34 +1,37 @@
 import { Component } from 'react';
 import './App.css';
 import { CardList } from './components/card-list/card-list';
-import { Card } from './components/card/Card';
+import { SearchBox} from './components/search-box/search-box';
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      monsters: [
+    constructor() {
+        super();
+        this.state = {
+            monsters: [],
+            searchField: ''
+        };
+    }
 
-      ]
-    };
-  }
+    componentDidMount() {
+        fetch('https://jsonplaceholder.typicode.com/users')
+            .then((res) => res.json())
+            .then((users) => this.setState({ monsters: users }));
+    }
 
-  componentDidMount() {
-    fetch('https://jsonplaceholder.typicode.com/users').then(res => res.json()).then(users => this.setState({ monsters: users }))
-  }
+    render() {
 
-
-
-  render() {
-    return (
-      <div className="App">
-        <CardList monsters={this.state.monsters}>
-
-        </CardList>
+        const {monsters, searchField} = this.state;   
+        const filteredMonsters = monsters.filter(monster => 
+          monster.name.toLowerCase().includes(searchField.toLocaleLowerCase())
+          )
 
 
-      </div>
-    );
-  }
+        return (
+            <div className="App">
+                <SearchBox placeholder='search monsters' handleChange ={ e => this.setState({searchField: e.target.value})}/>
+                <CardList monsters={filteredMonsters}></CardList>
+            </div>
+        );
+    }
 }
 
 export default App;
